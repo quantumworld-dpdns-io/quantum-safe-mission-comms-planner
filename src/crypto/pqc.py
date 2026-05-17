@@ -8,6 +8,7 @@ from typing import Tuple, Optional
 import hashlib
 import hmac
 import json
+import weave
 
 class PQCManager:
     def __init__(self):
@@ -35,6 +36,7 @@ class PQCManager:
                 return alg
         return self.sign_algorithms[0] if self.sign_algorithms else ''
     
+    @weave.op()
     def generate_keypair(self, algorithm: Optional[str] = None) -> Tuple[bytes, bytes]:
         """Generate a keypair for the specified KEM algorithm"""
         alg = algorithm or self.default_kem
