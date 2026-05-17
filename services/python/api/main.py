@@ -32,14 +32,17 @@ pqc_manager = PQCManager()
 quantum_simulator = QuantumCircuitSimulator()
 
 @app.get("/")
+@weave.op()
 async def root():
     return {"message": "Quantum-Safe Mission Comms Worker Service is running"}
 
 @app.get("/algorithms")
+@weave.op()
 async def get_algorithms():
     return pqc_manager.get_available_algorithms()
 
 @app.post("/simulate/bb84")
+@weave.op()
 async def simulate_bb84(params: BB84SimulationParams):
     """
     Simulate BB84 protocol
@@ -56,6 +59,7 @@ async def simulate_bb84(params: BB84SimulationParams):
         raise HTTPException(status_code=400, detail=str(e))
 
 @app.post("/crypto/generate-key", response_model=KeyPairResponse)
+@weave.op()
 async def generate_key(algorithm: Optional[str] = None):
     try:
         alg = algorithm or pqc_manager.default_kem
@@ -69,6 +73,7 @@ async def generate_key(algorithm: Optional[str] = None):
         raise HTTPException(status_code=400, detail=str(e))
 
 @app.post("/crypto/encapsulate", response_model=EncapsulateResponse)
+@weave.op()
 async def encapsulate(request: EncapsulateRequest):
     try:
         alg = request.algorithm or pqc_manager.default_kem
@@ -83,6 +88,7 @@ async def encapsulate(request: EncapsulateRequest):
         raise HTTPException(status_code=400, detail=str(e))
 
 @app.post("/crypto/decapsulate", response_model=DecapsulateResponse)
+@weave.op()
 async def decapsulate(request: DecapsulateRequest):
     try:
         alg = request.algorithm or pqc_manager.default_kem
@@ -97,6 +103,7 @@ async def decapsulate(request: DecapsulateRequest):
         raise HTTPException(status_code=400, detail=str(e))
 
 @app.post("/crypto/sign", response_model=SignResponse)
+@weave.op()
 async def sign(request: SignRequest):
     try:
         alg = request.algorithm or pqc_manager.default_sign
@@ -112,6 +119,7 @@ async def sign(request: SignRequest):
         raise HTTPException(status_code=400, detail=str(e))
 
 @app.post("/crypto/verify", response_model=VerifyResponse)
+@weave.op()
 async def verify(request: VerifyRequest):
     try:
         alg = request.algorithm or pqc_manager.default_sign
