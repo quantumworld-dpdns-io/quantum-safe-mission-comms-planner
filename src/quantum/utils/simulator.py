@@ -7,6 +7,7 @@ import numpy as np
 from typing import Dict, List, Optional, Tuple
 import json
 import os
+import weave
 
 try:
     from qiskit import QuantumCircuit, transpile
