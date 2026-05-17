@@ -85,6 +85,7 @@ class PQCManager:
             signature = sig.sign(message)
             return signature, public_key, secret_key
     
+    @weave.op()
     def verify_signature(self, message: bytes, signature: bytes, public_key: bytes, algorithm: Optional[str] = None) -> bool:
         """Verify a signature"""
         alg = algorithm or self.default_sign
