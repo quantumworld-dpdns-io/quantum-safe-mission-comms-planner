@@ -75,5 +75,21 @@ class MissionDataManager:
             return self.conn.execute("SELECT * FROM simulation_results WHERE mission_id = ?", [mission_id]).df()
         return self.conn.execute("SELECT * FROM simulation_results").df()
 
+    def get_mission_analytics(self) -> Dict[str, Any]:
+        """Get high-level analytics for all missions"""
+        stats = self.conn.execute("""
+            SELECT 
+                count(*) as total_simulations,
+                sum(CASE WHEN success THEN 1 ELSE 0 END) * 100.0 / count(*) as success_rate,
+                avg(CAST(json_extract(performance_metrics, '$.error_rate') AS FLOAT)) as avg_error_rate
+            FROM simulation_results
+        """).fetchone()
+        
+        return {
+            "total_simulations": stats[0],
+            "success_rate": stats[1],
+            "avg_error_rate": stats[2]
+        }
+
     def close(self):
         self.conn.close()
