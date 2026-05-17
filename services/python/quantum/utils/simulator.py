@@ -13,14 +13,17 @@ import time
 
 try:
     from qiskit import QuantumCircuit, transpile
-    from qiskit.providers.aer import AerSimulator
+    try:
+        from qiskit_aer import AerSimulator
+    except ImportError:
+        from qiskit.providers.aer import AerSimulator
     from qiskit.visualization import plot_histogram
     from qiskit.quantum_info import Statevector, partial_trace
     from qiskit.circuit.library import QFT
     QISKIT_AVAILABLE = True
 except ImportError:
     QISKIT_AVAILABLE = False
-    print("Qiskit not available. Install with: pip install qiskit")
+    print("Qiskit not available. Install with: pip install qiskit qiskit-aer")
 
 class QuantumCircuitSimulator:
     def __init__(self):
