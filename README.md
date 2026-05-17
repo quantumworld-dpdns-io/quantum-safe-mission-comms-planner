@@ -1,20 +1,45 @@
 # Quantum-Safe Mission Communications Planner
 
-> Quantum-safe mission communications planner – maps cryptographic dependencies and simulates key rotations for long-life space missions
+> A production-ready polyglot microservices platform for planning, simulating, and analyzing quantum-safe mission communications.
 
-This repository implements a comprehensive quantum-safe communications planning system for space missions, featuring OpenQASM-based quantum circuit simulations, post-quantum cryptography, comprehensive testing frameworks (including OWASP Top 10 security tests), and robust CI/CD pipelines.
+## 🏗️ Architecture
 
-## Overview
+The system is built using a modern microservices architecture to ensure scalability, performance, and maintainability:
 
-The Quantum-Safe Mission Communications Planner is designed to address the cryptographic challenges posed by quantum computing to long-duration space missions. It provides tools for:
+- **Frontend (Next.js)**: A responsive, high-fidelity dashboard built with React, TypeScript, and Tailwind CSS.
+- **Core Backend (Go)**: A high-concurrency gateway built with Gin, managing mission state (DuckDB) and security policies (Chroma Vector DB).
+- **Simulation Microservice (Python)**: A specialized worker service for quantum simulations (Qiskit), post-quantum cryptography (liboqs), and ML observability (W&B Weave).
 
-- Simulating quantum key distribution protocols (BB84, E91) using OpenQASM
-- Implementing and testing post-quantum cryptographic algorithms
-- Modeling cryptographic dependencies for mission planning
-- Simulating key rotation strategies under quantum threat models
-- Comprehensive security testing aligned with OWASP Top 10
-- Performance benchmarking and validation
-- Automated CI/CD pipelines with security gates
+## 🚀 Features
+
+- **Polyglot Power**: High-performance Go orchestration with specialized Python quantum compute.
+- **Quantum Simulation**: Native support for BB84, E91, and custom OpenQASM 3.0 circuits.
+- **PQC Management**: NIST-standard algorithms (Kyber, Dilithium) with hybrid transition paths.
+- **Semantic Search**: AI-powered security policy management using ChromaDB.
+- **Analytical Insights**: Local analytical SQL engine (DuckDB) for mission metrics.
+- **Observability**: Trace and evaluate every quantum operation with Weights & Biases Weave.
+- **Security-First**: Integrated OWASP Top 10 testing and robust CI/CD pipelines.
+
+## 📦 Project Structure
+
+```
+.
+├── frontend/               # Next.js Frontend
+├── services/
+│   ├── go-core/            # Go API Gateway & Data Management
+│   └── python/             # Quantum & PQC Microservice
+├── data/                   # Shared data storage (DuckDB, Chroma)
+├── .github/                # CI/CD Workflows
+└── README.md
+```
+
+## 🛠️ Getting Started
+
+### Prerequisites
+- Go 1.21+
+- Python 3.11+
+- Node.js 18+
+- liboqs (system dependency)
 
 ## Features
 
