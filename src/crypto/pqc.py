@@ -60,6 +60,7 @@ class PQCManager:
             ciphertext, shared_secret = kem.encap_secret()
             return ciphertext, shared_secret
     
+    @weave.op()
     def decapsulate(self, ciphertext: bytes, secret_key: bytes, algorithm: Optional[str] = None) -> bytes:
         """Decapsulate a shared secret using the secret key"""
         alg = algorithm or self.default_kem
@@ -71,6 +72,7 @@ class PQCManager:
             shared_secret = kem.decap_secret(ciphertext)
             return shared_secret
     
+    @weave.op()
     def sign_message(self, message: bytes, algorithm: Optional[str] = None) -> Tuple[bytes, bytes, bytes]:
         """Sign a message and return signature, public key, and secret key"""
         alg = algorithm or self.default_sign
