@@ -12,6 +12,7 @@ import secrets
 import subprocess
 import socket
 import ipaddress
+import requests
 from typing import List, Dict, Any, Tuple, Optional
 import urllib.parse
 import re
@@ -19,8 +20,68 @@ import re
 class SecurityTestLibrary:
     def __init__(self):
         self.security_logs = []
-        self.alert_config = {}
-    
+        self.alert_config = {
+            'failed_login_threshold': 5,
+            'alert_email': 'admin@example.com'
+        }
+        self.test_states = []
+
+    def send_request(self, method: str, url: str, **kwargs) -> Dict[str, Any]:
+        """Send an HTTP request and return a dictionary with status_code and body"""
+        capture_response = kwargs.pop('capture_response', True)
+        try:
+            response = requests.request(method, url, **kwargs)
+            result = {
+                'status_code': str(response.status_code),
+                'headers': dict(response.headers),
+            }
+            if capture_response:
+                try:
+                    result['body'] = response.json()
+                except:
+                    result['body'] = response.text
+            
+            # For some reason the robot tests expect 'body' to be directly accessible
+            # and sometimes they want the whole response object-like dict
+            # We also add specific fields that the robot tests use
+            if 'access_token' in result.get('body', {}) if isinstance(result.get('body'), dict) else False:
+                result['access_token'] = result['body']['access_token']
+            
+            return result
+        except Exception as e:
+            return {'status_code': '500', 'body': str(e), 'error': str(e)}
+
+    def log_security_test_state(self):
+        """Log the state after a security test"""
+        self.test_states.append(self._get_timestamp())
+
+    def run_command(self, command: str, *args) -> str:
+        """Run a shell command and return its output"""
+        full_command = f"{command} {' '.join(args)}"
+        try:
+            result = subprocess.check_output(full_command, shell=True, stderr=subprocess.STDOUT)
+            return result.decode('utf-8').strip()
+        except subprocess.CalledProcessError as e:
+            return e.output.decode('utf-8').strip()
+
+    def generate_fuzz_payloads(self, fuzz_type: str = 'xss') -> List[str]:
+        """Generate a list of fuzzing payloads"""
+        if fuzz_type == 'xss':
+            return [
+                '<script>alert(1)</script>',
+                '<img src=x onerror=alert(1)>',
+                '"><script>alert(1)</script>',
+                "javascript:alert(1)"
+            ]
+        elif fuzz_type == 'sql':
+            return [
+                "' OR '1'='1",
+                "'; DROP TABLE users; --",
+                "1; SELECT * FROM information_schema.tables",
+                "' UNION SELECT NULL, NULL, NULL --"
+            ]
+        return ["test", "fuzz", "1234"]
+
     # A01: Broken Access Control
     def check_access_control(self, user_role: str, resource: str, action: str) -> bool:
         """Check if a user role can perform an action on a resource"""
@@ -445,3 +506,19 @@ def check_if_update_signed(filename: str) -> bool:
 def verify_dependency_integrity(package_name: str) -> bool:
     lib = SecurityTestLibrary()
     return lib.verify_dependency_integrity(package_name)
+
+def send_request(method: str, url: str, **kwargs) -> Dict[str, Any]:
+    lib = SecurityTestLibrary()
+    return lib.send_request(method, url, **kwargs)
+
+def log_security_test_state():
+    lib = SecurityTestLibrary()
+    lib.log_security_test_state()
+
+def run_command(command: str, *args) -> str:
+    lib = SecurityTestLibrary()
+    return lib.run_command(command, *args)
+
+def generate_fuzz_payloads(fuzz_type: str = 'xss') -> List[str]:
+    lib = SecurityTestLibrary()
+    return lib.generate_fuzz_payloads(fuzz_type)
