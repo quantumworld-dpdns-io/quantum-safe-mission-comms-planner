@@ -5,6 +5,10 @@ from src.crypto.pqc import PQCManager
 from src.quantum.utils.data_manager import MissionDataManager
 from src.quantum.utils.simulator import QuantumCircuitSimulator
 import os
+import weave
+
+# Initialize Weave
+weave.init("quantum-safe-mission-planner")
 
 app = FastAPI(
     title="Quantum-Safe Mission Comms Planner API",
