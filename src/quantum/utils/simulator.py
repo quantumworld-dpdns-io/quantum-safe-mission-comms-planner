@@ -118,6 +118,7 @@ class QuantumCircuitSimulator:
             'key_length': len(sifted_key_alice)
         }
     
+    @weave.op()
     def estimate_quantum_resources(self, circuit: QuantumCircuit) -> Dict:
         """Estimate quantum resources required for a circuit"""
         # Count gates
