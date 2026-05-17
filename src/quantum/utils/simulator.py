@@ -8,6 +8,8 @@ from typing import Dict, List, Optional, Tuple
 import json
 import os
 import weave
+import psutil
+import time
 
 try:
     from qiskit import QuantumCircuit, transpile

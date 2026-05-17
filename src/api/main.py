@@ -4,10 +4,6 @@ from src.models.schemas import Mission, SimulationResult, CryptoAlgorithm
 from src.crypto.pqc import PQCManager
 from src.quantum.utils.data_manager import MissionDataManager
 from src.quantum.utils.simulator import QuantumCircuitSimulator
-import os
-import weave
-from src.quantum.utils.data_manager import MissionDataManager
-from src.quantum.utils.simulator import QuantumCircuitSimulator
 from src.quantum.utils.policy_manager import PolicyManager
 import os
 
@@ -87,7 +83,6 @@ async def delete_policy(policy_id: str):
         raise HTTPException(status_code=400, detail=str(e))
 
 @app.post("/simulate/bb84")
-
 async def simulate_bb84(params: Dict[str, Any]):
     """
     Simulate BB84 protocol
