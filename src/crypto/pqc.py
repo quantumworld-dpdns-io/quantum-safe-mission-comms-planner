@@ -117,6 +117,7 @@ class HybridCrypto:
         # In a full implementation, we would also have traditional ECC (e.g., using cryptography library)
         # For now, we focus on PQC and note where hybrid would be used.
     
+    @weave.op()
     def encrypt_hybrid(self, plaintext: bytes, pqc_public_key: bytes) -> dict:
         """
         Encrypt using hybrid approach:
@@ -149,6 +150,7 @@ class HybridCrypto:
             'note': 'In production, symmetric key is used for AES-GCM encryption of plaintext'
         }
     
+    @weave.op()
     def decrypt_hybrid(self, encrypted_data: dict, pqc_secret_key: bytes) -> bytes:
         """
         Decrypt using hybrid approach:
