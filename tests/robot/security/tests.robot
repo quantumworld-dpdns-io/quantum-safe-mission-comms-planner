@@ -320,7 +320,7 @@ Test A10 Server-Side Request Forgery
 *** Keywords ***
 Load Quantum Circuit
     [Arguments]    ${filepath}
-    ${circuit}=    Import Library    QuantumCircuitSimulator    ../../src/quantum/utils/simulator.py
+    ${circuit}=    Import Library    QuantumCircuitSimulator    ../../services/python/quantum/utils/simulator.py
     ${qc}=    Call Method    ${circuit}    load_qasm_file    ${filepath}
     [Return]    ${qc}
 
@@ -331,56 +331,56 @@ Get Circuit Name
 
 Generate PQC Keypair
     [Arguments]
-    ${crypto}=    Import Library    PQCManager    ../../src/crypto/pqc.py
+    ${crypto}=    Import Library    PQCManager    ../../services/python/crypto/pqc.py
     ${public_key}, ${secret_key}=    Call Method    ${crypto}    generate_keypair
     [Return]    ${public_key}    ${secret_key}
 
 PQC Encapsulate
     [Arguments]    ${public_key}
-    ${crypto}=    Import Library    PQCManager    ../../src/crypto/pqc.py
+    ${crypto}=    Import Library    PQCManager    ../../services/python/crypto/pqc.py
     ${ciphertext}, ${shared_secret}=    Call Method    ${crypto}    encapsulate    ${public_key}
     [Return]    ${ciphertext}    ${shared_secret}
 
 PQC Decapsulate
     [Arguments]    ${ciphertext}    ${secret_key}
-    ${crypto}=    Import Library    PQCManager    ../../src/crypto/pqc.py
+    ${crypto}=    Import Library    PQCManager    ../../services/python/crypto/pqc.py
     ${shared_secret}=    Call Method    ${crypto}    decapsulate    ${ciphertext}    ${secret_key}
     [Return]    ${shared_secret}
 
 Sign Message
     [Arguments]    ${message}
-    ${crypto}=    Import Library    PQCManager    ../../src/crypto/pqc.py
+    ${crypto}=    Import Library    PQCManager    ../../services/python/crypto/pqc.py
     ${signature}, ${public_key}, ${secret_key}=    Call Method    ${crypto}    sign_message    ${message}
     [Return]    ${signature}    ${public_key}    ${secret_key}
 
 Verify Signature
     [Arguments]    ${message}    ${signature}    ${public_key}
-    ${crypto}=    Import Library    PQCManager    ../../src/crypto/pqc.py
+    ${crypto}=    Import Library    PQCManager    ../../services/python/crypto/pqc.py
     ${valid}=    Call Method    ${crypto}    verify_signature    ${message}    ${signature}    ${public_key}
     [Return]    ${valid}
 
 Get Available PQC Algorithms
     [Arguments]
-    ${crypto}=    Import Library    PQCManager    ../../src/crypto/pqc.py
+    ${crypto}=    Import Library    PQCManager    ../../services/python/crypto/pqc.py
     ${algos}=    Call Method    ${crypto}    get_available_algorithms
     [Return]    ${algos}
 
 Get Default PQC Algorithms
     [Arguments]
-    ${crypto}=    Import Library    PQCManager    ../../src/crypto/pqc.py
+    ${crypto}=    Import Library    PQCManager    ../../services/python/crypto/pqc.py
     ${kem}=    Get Variable From Dictionary    ${crypto}    default_kem
     ${sign}=    Get Variable From Dictionary    ${crypto}    default_sign
     [Return]    ${kem}    ${sign}
 
 Get Algorithm Info
     [Arguments]    ${algorithm}    ${type}
-    ${crypto}=    Import Library    PQCManager    ../../src/crypto/pqc.py
+    ${crypto}=    Import Library    PQCManager    ../../services/python/crypto/pqc.py
     ${info}=    Call Method    ${crypto}    get_algorithm_info    ${algorithm}    ${type}
     [Return]    ${info}
 
 Encrypt Data
     [Arguments]    ${plaintext}    ${algorithm}
-    ${crypto}=    Import Library    HybridCrypto    ../../src/crypto/pqc.py
+    ${crypto}=    Import Library    HybridCrypto    ../../services/python/crypto/pqc.py
     ${result}=    Call Method    ${crypto}    encrypt_hybrid    ${plaintext}    ${algorithm}
     [Return]    ${result}
 

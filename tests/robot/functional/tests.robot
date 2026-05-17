@@ -9,7 +9,7 @@ Library           ../resources/DataTestLibrary.py
 Test Teardown     Log Test State
 
 *** Variables ***
-${QASM_DIR}       ../../src/quantum/circuits
+${QASM_DIR}       ../../services/python/quantum/circuits
 ${TEST_SHOTS}     1024
 ${ERROR_THRESHOLD} 0.25
 
@@ -99,7 +99,7 @@ Test Chroma Policy Storage
 *** Keywords ***
 Load Quantum Circuit
     [Arguments]    ${filepath}
-    ${circuit}=    Import Library    QuantumCircuitSimulator    ../../src/quantum/utils/simulator.py
+    ${circuit}=    Import Library    QuantumCircuitSimulator    ../../services/python/quantum/utils/simulator.py
     ${qc}=    Call Method    ${circuit}    load_qasm_file    ${filepath}
     [Return]    ${qc}
 
@@ -110,7 +110,7 @@ Get Circuit Name
 
 Simulate BB84 Protocol
     [Arguments]    ${alice_bit}    ${alice_basis}    ${bob_basis}    ${shots}
-    ${simulator}=    Import Library    QuantumCircuitSimulator    ../../src/quantum/utils/simulator.py
+    ${simulator}=    Import Library    QuantumCircuitSimulator    ../../services/python/quantum/utils/simulator.py
     ${alice_bits}=    Create List    ${alice_bit}
     ${alice_bases}=    Create List    ${alice_basis}
     ${bob_bases}=    Create List    ${bob_basis}
@@ -119,30 +119,30 @@ Simulate BB84 Protocol
 
 Generate PQC Keypair
     [Arguments]
-    ${crypto}=    Import Library    PQCManager    ../../src/crypto/pqc.py
+    ${crypto}=    Import Library    PQCManager    ../../services/python/crypto/pqc.py
     ${public_key}, ${secret_key}=    Call Method    ${crypto}    generate_keypair
     [Return]    ${public_key}    ${secret_key}
 
 PQC Encapsulate
     [Arguments]    ${public_key}
-    ${crypto}=    Import Library    PQCManager    ../../src/crypto/pqc.py
+    ${crypto}=    Import Library    PQCManager    ../../services/python/crypto/pqc.py
     ${ciphertext}, ${shared_secret}=    Call Method    ${crypto}    encapsulate    ${public_key}
     [Return]    ${ciphertext}    ${shared_secret}
 
 PQC Decapsulate
     [Arguments]    ${ciphertext}    ${secret_key}
-    ${crypto}=    Import Library    PQCManager    ../../src/crypto/pqc.py
+    ${crypto}=    Import Library    PQCManager    ../../services/python/crypto/pqc.py
     ${shared_secret}=    Call Method    ${crypto}    decapsulate    ${ciphertext}    ${secret_key}
     [Return]    ${shared_secret}
 
 Sign Message
     [Arguments]    ${message}
-    ${crypto}=    Import Library    PQCManager    ../../src/crypto/pqc.py
+    ${crypto}=    Import Library    PQCManager    ../../services/python/crypto/pqc.py
     ${signature}, ${public_key}, ${secret_key}=    Call Method    ${crypto}    sign_message    ${message}
     [Return]    ${signature}    ${public_key}    ${secret_key}
 
 Verify Signature
     [Arguments]    ${message}    ${signature}    ${public_key}
-    ${crypto}=    Import Library    PQCManager    ../../src/crypto/pqc.py
+    ${crypto}=    Import Library    PQCManager    ../../services/python/crypto/pqc.py
     ${valid}=    Call Method    ${crypto}    verify_signature    ${message}    ${signature}    ${public_key}
     [Return]    ${valid}
