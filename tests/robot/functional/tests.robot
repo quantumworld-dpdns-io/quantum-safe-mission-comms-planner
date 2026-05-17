@@ -77,6 +77,24 @@ Test PQC Sign Verify
     ${valid}=    Verify Signature    ${message}    ${signature}    ${pub_key}
     Should Be True    ${valid}
 
+Test DuckDB Analytics
+    [Documentation]    Verify DuckDB analytical queries
+    ${analytics}=    Get Mission Analytics
+    Should Not Be Empty    ${analytics}
+    Dictionary Should Contain Key    ${analytics}    total_simulations
+    Dictionary Should Contain Key    ${analytics}    success_rate
+
+Test Chroma Policy Storage
+    [Documentation]    Verify Chroma vector store for policies
+    ${policy_id}=    Generate Random String    8
+    Add Security Policy    ${policy_id}    This is a quantum security policy    {"type": "encryption"}
+    ${policies}=    List Security Policies
+    Should Contain    ${policies}    ${policy_id}
+    ${search_results}=    Search Security Policies    quantum security
+    ${documents}=    Get From Dictionary    ${search_results}    documents
+    Should Not Be Empty    ${documents}
+    Delete Security Policy    ${policy_id}
+
 *** Keywords ***
 Load Quantum Circuit
     [Arguments]    ${filepath}
