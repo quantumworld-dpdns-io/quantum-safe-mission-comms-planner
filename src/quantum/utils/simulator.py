@@ -39,6 +39,7 @@ class QuantumCircuitSimulator:
         self.circuits[filepath] = circuit
         return circuit
     
+    @weave.op()
     def simulate_circuit(self, circuit: QuantumCircuit, shots: int = 1024) -> Dict:
         """Simulate a quantum circuit and return measurement results"""
         # Transpile for the simulator
@@ -63,6 +64,7 @@ class QuantumCircuitSimulator:
             'shots': shots
         }
     
+    @weave.op()
     def analyze_bb84_protocol(self, alice_bits: List[int], alice_bases: List[int], 
                               bob_bases: List[int], shots: int = 1024) -> Dict:
         """Simulate BB84 protocol with given parameters"""
