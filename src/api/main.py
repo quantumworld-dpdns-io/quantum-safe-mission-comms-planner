@@ -6,9 +6,10 @@ from src.quantum.utils.data_manager import MissionDataManager
 from src.quantum.utils.simulator import QuantumCircuitSimulator
 import os
 import weave
-
-# Initialize Weave
-weave.init("quantum-safe-mission-planner")
+from src.quantum.utils.data_manager import MissionDataManager
+from src.quantum.utils.simulator import QuantumCircuitSimulator
+from src.quantum.utils.policy_manager import PolicyManager
+import os
 
 app = FastAPI(
     title="Quantum-Safe Mission Comms Planner API",
@@ -20,6 +21,7 @@ app = FastAPI(
 pqc_manager = PQCManager()
 data_manager = MissionDataManager()
 quantum_simulator = QuantumCircuitSimulator()
+policy_manager = PolicyManager()
 
 @app.get("/")
 async def root():
@@ -42,7 +44,50 @@ async def list_missions():
     df = data_manager.get_missions()
     return df.to_dict(orient="records")
 
+@app.get("/analytics")
+async def get_analytics():
+    try:
+        return data_manager.get_mission_analytics()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/policies")
+async def add_policy(policy: Dict[str, Any]):
+    try:
+        policy_manager.add_policy(
+            policy_id=policy['id'],
+            content=policy['content'],
+            metadata=policy.get('metadata')
+        )
+        return {"status": "success", "policy_id": policy['id']}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@app.get("/policies")
+async def list_policies():
+    return {"policies": policy_manager.list_policies()}
+
+@app.post("/policies/search")
+async def search_policies(query: Dict[str, Any]):
+    try:
+        results = policy_manager.search_policies(
+            query=query['query'],
+            n_results=query.get('n_results', 3)
+        )
+        return results
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+@app.delete("/policies/{policy_id}")
+async def delete_policy(policy_id: str):
+    try:
+        policy_manager.delete_policy(policy_id)
+        return {"status": "success"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
 @app.post("/simulate/bb84")
+
 async def simulate_bb84(params: Dict[str, Any]):
     """
     Simulate BB84 protocol
