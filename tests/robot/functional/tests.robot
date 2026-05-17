@@ -5,6 +5,7 @@ Library           Collections
 Library           String
 Library           ../resources/QuantumTestLibrary.py
 Library           ../resources/CryptoTestLibrary.py
+Library           ../resources/DataTestLibrary.py
 Test Teardown     Log Test State
 
 *** Variables ***
