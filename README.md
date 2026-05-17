@@ -56,10 +56,10 @@ The Quantum-Safe Mission Communications Planner is designed to address the crypt
 - **Release Management**: Automated versioning and GitHub releases
 
 ### 📦 Software-Tools Integration
-- **Cloud-Native Security**: Cilium Tetragon for runtime protection
-- **Data Lakehouse**: Apache Arrow/Pandas for efficient cryptographic metadata handling
-- **Vector Databases**: Weaviate/Qdrant for semantic cryptographic dependency graphs
-- **AI-Assisted Development**: Integration with Claude Code and other AI agents
+- **Observability**: Weights & Biases Weave for tracing and evaluating quantum simulations and cryptographic performance.
+- **Data Lakehouse**: DuckDB for efficient analytical queries and mission log archival.
+- **Vector Databases**: Chroma for semantic search and management of mission security policies.
+- **AI-Assisted Development**: Integration with Claude Code and other AI agents for autonomous implementation and testing.
 
 ## Project Structure
 
