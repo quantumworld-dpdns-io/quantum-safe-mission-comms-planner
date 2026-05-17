@@ -48,6 +48,7 @@ class PQCManager:
             secret_key = kem.export_secret_key()
             return public_key, secret_key
     
+    @weave.op()
     def encapsulate(self, public_key: bytes, algorithm: Optional[str] = None) -> Tuple[bytes, bytes]:
         """Encapsulate a shared secret using the public key"""
         alg = algorithm or self.default_kem
